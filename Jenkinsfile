@@ -31,7 +31,7 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'test-results/report.html', allowEmptyArchive: true
             emailext(
-                to: "sanashoukat099@gmail.com" ,
+                to: "sanashoukat099@gmail.com" , "sanashoukat7180@gmail.com",
                 subject: "FooDash Tests - Build #${BUILD_NUMBER} - ${currentBuild.currentResult}",
                 body: """
                     <h2>FooDash Selenium Test Results</h2>

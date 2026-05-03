@@ -74,10 +74,10 @@ def test_08_login_invalid_credentials():
     driver.find_element(By.CSS_SELECTOR, "input[type='email']").send_keys("invalid@test.com")
     driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("wrongpass123")
     buttons = driver.find_elements(By.CSS_SELECTOR, "button")
-     for btn in buttons:
-      if btn.is_displayed() and btn.is_enabled():
-         btn.click()
-         break
+    for btn in buttons:
+        if btn.is_displayed() and btn.is_enabled():
+            btn.click()
+            break
     time.sleep(3)
     body = driver.find_element(By.TAG_NAME, "body").text.lower()
     assert any(w in body for w in ["invalid", "error", "incorrect", "wrong", "failed", "login"])

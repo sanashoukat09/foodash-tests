@@ -1,19 +1,23 @@
 pipeline {
     agent any
-
     stages {
+        stage('Start App') {
+            steps {
+                sh 'sudo systemctl start nginx || true'
+                sh 'pm2 start /home/ubuntu/foodash/backend/server.js --name foodash-api || pm2 restart foodash-api'
+                sh 'sleep 5'
+            }
+        }
         stage('Clone Test Repo') {
             steps {
                 git branch: 'main', url: 'https://github.com/sanashoukat09/foodash-tests.git'
             }
         }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t foodash-selenium-tests .'
             }
         }
-
         stage('Run Tests') {
             steps {
                 sh '''
@@ -26,12 +30,11 @@ pipeline {
             }
         }
     }
-
     post {
         always {
             archiveArtifacts artifacts: 'test-results/report.html', allowEmptyArchive: true
             emailext(
-                to: "sanashoukat099@gmail.com" , "sanashoukat7180@gmail.com",
+                to: "sanashoukat099@gmail.com",
                 subject: "FooDash Tests - Build #${BUILD_NUMBER} - ${currentBuild.currentResult}",
                 body: """
                     <h2>FooDash Selenium Test Results</h2>
